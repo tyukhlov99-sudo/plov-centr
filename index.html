@@ -286,7 +286,16 @@
             <label>Дата<input id="formDate" type="date" name="date" /></label>
             <label>Количество гостей<input type="number" name="guests" min="1" max="50" value="2" /></label>
           </div>
+          <fieldset class="delivery-fields" id="deliveryFields" hidden>
+            <legend>Получение</legend>
+            <div class="delivery-options">
+              <label><input type="radio" name="delivery_method" value="delivery" checked /> Доставка</label>
+              <label><input type="radio" name="delivery_method" value="pickup" /> Самовывоз</label>
+            </div>
+            <label class="field-full" id="addressField">Адрес доставки<input id="deliveryAddress" type="text" name="address" autocomplete="street-address" placeholder="Улица, дом, квартира" /></label>
+          </fieldset>
           <label class="field-full">Комментарий<textarea name="comment" rows="3" placeholder="Пожелания к бронированию или заказу"></textarea></label>
+          <p class="form-error" id="formError" role="alert" hidden></p>
           <button class="button button-dark" type="submit" id="formSubmit">Отправить заявку <span>↗</span></button>
           <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
         </form>

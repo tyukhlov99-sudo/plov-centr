@@ -296,9 +296,13 @@ const modalOrderPreview = document.getElementById("modalOrderPreview");
 const serviceForm = document.getElementById("serviceForm");
 const formContext = document.getElementById("formContext");
 const dateFields = document.getElementById("dateFields");
+const deliveryFields = document.getElementById("deliveryFields");
+const addressField = document.getElementById("addressField");
+const deliveryAddress = document.getElementById("deliveryAddress");
 const formSubmit = document.getElementById("formSubmit");
 const formSuccess = document.getElementById("formSuccess");
 const successText = document.getElementById("successText");
+const formError = document.getElementById("formError");
 const toast = document.getElementById("toast");
 
 function formatPrice(value) {
@@ -412,12 +416,26 @@ function cartPreviewMarkup() {
   }).join("") + '<p><span>Итого</span><b>' + formatPrice(total) + '</b></p>';
 }
 
+function updateDeliveryAddress() {
+  const isDelivery = serviceForm.elements.delivery_method.value === "delivery";
+  addressField.hidden = !isDelivery;
+  deliveryAddress.required = isDelivery;
+}
+
+function setFormError(message) {
+  formError.textContent = message || "";
+  formError.hidden = !message;
+}
+
 function openModal(type) {
   closeCart();
   formSuccess.hidden = true;
   serviceForm.hidden = false;
+  serviceForm.reset();
+  setFormError("");
   modalOrderPreview.hidden = true;
   dateFields.hidden = false;
+  deliveryFields.hidden = true;
   formContext.value = type;
   const settings = {
     booking: {
@@ -442,7 +460,7 @@ function openModal(type) {
       title: "Оформление заказа",
       description: "Проверьте состав заказа и оставьте телефон для подтверждения доставки.",
       submit: "Подтвердить заказ",
-      success: "Заказ принят. Мы скоро свяжемся с вами для подтверждения и уточнения доставки."
+      success: "Заказ принят! Мы получили ваш заказ и скоро свяжемся с вами для подтверждения."
     }
   };
   const setting = settings[type] || settings.booking;
@@ -454,6 +472,8 @@ function openModal(type) {
     modalOrderPreview.hidden = false;
     modalOrderPreview.innerHTML = cartPreviewMarkup();
     dateFields.hidden = true;
+    deliveryFields.hidden = false;
+    updateDeliveryAddress();
   }
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
@@ -514,13 +534,66 @@ overlay.addEventListener("click", function () {
   closeModal();
 });
 
-serviceForm.addEventListener("submit", function (event) {
+serviceForm.addEventListener("change", function (event) {
+  if (event.target.name === "delivery_method") updateDeliveryAddress();
+});
+
+serviceForm.addEventListener("submit", async function (event) {
   event.preventDefault();
-  serviceForm.hidden = true;
-  formSuccess.hidden = false;
-  if (formContext.value === "order") {
+  setFormError("");
+  if (!serviceForm.reportValidity()) return;
+
+  if (formContext.value !== "order") {
+    serviceForm.hidden = true;
+    formSuccess.hidden = false;
+    return;
+  }
+
+  if (!cart.size) {
+    setFormError("Корзина пуста. Добавьте блюда в заказ.");
+    return;
+  }
+
+  if (window.location.protocol === "file:") {
+    setFormError("Отправка заказов недоступна при открытии сайта как файла. Загрузите сайт на Beget или откройте его через PHP-сервер.");
+    return;
+  }
+
+  const formData = new FormData(serviceForm);
+  const payload = {
+    name: String(formData.get("name") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    delivery_method: String(formData.get("delivery_method") || ""),
+    address: String(formData.get("address") || "").trim(),
+    comment: String(formData.get("comment") || "").trim(),
+    items: Array.from(cart.values()).map(function (entry) {
+      return { id: entry.item.id, quantity: entry.quantity };
+    })
+  };
+  const originalButton = formSubmit.innerHTML;
+  formSubmit.disabled = true;
+  formSubmit.textContent = "Отправляем…";
+  try {
+    const response = await fetch("./order.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(function () { return {}; });
+    if (!response.ok || !result.ok) {
+      setFormError(result.message || "Не удалось отправить заказ. Попробуйте ещё раз.");
+      return;
+    }
+    successText.textContent = result.message;
+    serviceForm.hidden = true;
+    formSuccess.hidden = false;
     cart.clear();
     renderCart();
+  } catch (error) {
+    setFormError("Не удалось отправить заказ. Проверьте интернет и попробуйте ещё раз.");
+  } finally {
+    formSubmit.disabled = false;
+    formSubmit.innerHTML = originalButton;
   }
 });
 
