@@ -300,7 +300,12 @@ const deliveryFields = document.getElementById("deliveryFields");
 const addressField = document.getElementById("addressField");
 const deliveryAddress = document.getElementById("deliveryAddress");
 const formSubmit = document.getElementById("formSubmit");
+const banquetForm = document.getElementById("banquetForm");
+const banquetDate = document.getElementById("banquetDate");
+const banquetSubmit = document.getElementById("banquetSubmit");
+const banquetFormError = document.getElementById("banquetFormError");
 const formSuccess = document.getElementById("formSuccess");
+const successTitle = document.getElementById("successTitle");
 const successText = document.getElementById("successText");
 const formError = document.getElementById("formError");
 const toast = document.getElementById("toast");
@@ -308,6 +313,13 @@ const toast = document.getElementById("toast");
 function formatPrice(value) {
   if (value === null) return "Цена уточняется";
   return new Intl.NumberFormat("ru-RU").format(value) + " ₽";
+}
+
+function localDateValue(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return year + "-" + month + "-" + day;
 }
 
 function findItem(id) {
@@ -427,12 +439,74 @@ function setFormError(message) {
   formError.hidden = !message;
 }
 
+function setBanquetFormError(message) {
+  banquetFormError.textContent = message || "";
+  banquetFormError.hidden = !message;
+}
+
+function validateBanquetForm() {
+  const fields = banquetForm.elements;
+  banquetForm.querySelectorAll("[aria-invalid=true]").forEach(function (field) {
+    field.removeAttribute("aria-invalid");
+  });
+
+  function showFieldError(field, message) {
+    field.setAttribute("aria-invalid", "true");
+    setBanquetFormError(message);
+    field.focus();
+    return false;
+  }
+
+  if (!fields.event_type.value) {
+    return showFieldError(fields.event_type, "Выберите тип мероприятия");
+  }
+  if (!fields.event_date.value) {
+    return showFieldError(fields.event_date, "Выберите дату мероприятия");
+  }
+  if (fields.event_date.value < localDateValue(new Date())) {
+    return showFieldError(fields.event_date, "Дата мероприятия не может быть в прошлом");
+  }
+  if (!fields.event_time.value) {
+    return showFieldError(fields.event_time, "Укажите время начала мероприятия");
+  }
+
+  const guests = Number(fields.guests.value);
+  if (!Number.isInteger(guests) || guests < 2 || guests > 300) {
+    return showFieldError(fields.guests, "Укажите количество гостей от 2 до 300");
+  }
+  if (fields.name.value.trim().length < 2) {
+    return showFieldError(fields.name, "Укажите ваше имя");
+  }
+
+  const phoneDigits = fields.phone.value.replace(/\D/g, "");
+  const validPhone = phoneDigits.length === 10 || (phoneDigits.length === 11 && /^[78]/.test(phoneDigits));
+  if (!validPhone) {
+    return showFieldError(fields.phone, "Введите корректный номер телефона");
+  }
+
+  if (fields.budget.value !== "") {
+    const budget = Number(fields.budget.value);
+    if (!Number.isInteger(budget) || budget < 500 || budget > 50000) {
+      return showFieldError(fields.budget, "Укажите бюджет от 500 до 50 000 ₽ или оставьте поле пустым");
+    }
+  }
+
+  return true;
+}
+
 function openModal(type) {
   closeCart();
+  const isBanquet = type === "banquet";
   formSuccess.hidden = true;
-  serviceForm.hidden = false;
-  serviceForm.reset();
+  serviceForm.hidden = isBanquet;
+  banquetForm.hidden = !isBanquet;
+  if (isBanquet) {
+    banquetForm.reset();
+    banquetDate.min = localDateValue(new Date());
+  }
+  else serviceForm.reset();
   setFormError("");
+  setBanquetFormError("");
   modalOrderPreview.hidden = true;
   dateFields.hidden = false;
   deliveryFields.hidden = true;
@@ -445,16 +519,10 @@ function openModal(type) {
       success: "Ваша заявка на бронирование принята. Мы скоро свяжемся с вами для подтверждения."
     },
     banquet: {
-      title: "Ваше событие",
-      description: "Расскажите о дате и формате — подготовим предложение для вашего стола.",
-      submit: "Обсудить банкет",
-      success: "Спасибо за интерес к банкету. Мы свяжемся с вами и обсудим все детали."
-    },
-    certificate: {
-      title: "Подарочный сертификат",
-      description: "Выберите номинал в комментарии: 3 000, 5 000 или 10 000 ₽. Мы подготовим сертификат для вас.",
-      submit: "Оформить сертификат",
-      success: "Заявка на сертификат принята. Мы свяжемся с вами, чтобы выбрать номинал и способ получения."
+      title: "Заявка на мероприятие",
+      description: "Заполните информацию о событии — мы свяжемся с вами, уточним детали и предложим подходящий вариант.",
+      successTitle: "Заявка принята!",
+      success: "Мы получили информацию о мероприятии и скоро свяжемся с вами, чтобы обсудить меню, посадку и остальные детали."
     },
     order: {
       title: "Оформление заказа",
@@ -466,7 +534,8 @@ function openModal(type) {
   const setting = settings[type] || settings.booking;
   modalTitle.textContent = setting.title;
   modalDescription.textContent = setting.description;
-  formSubmit.innerHTML = setting.submit + " <span>↗</span>";
+  successTitle.textContent = setting.successTitle || "Спасибо!";
+  if (!isBanquet) formSubmit.innerHTML = setting.submit + " <span>↗</span>";
   successText.textContent = setting.success;
   if (type === "order") {
     modalOrderPreview.hidden = false;
@@ -479,7 +548,7 @@ function openModal(type) {
   modal.setAttribute("aria-hidden", "false");
   revealOverlay();
   window.setTimeout(function () {
-    const firstInput = modal.querySelector("input:not([type=hidden])");
+    const firstInput = modal.querySelector("form:not([hidden]) select, form:not([hidden]) input:not([type=hidden])");
     if (firstInput) firstInput.focus();
   }, 180);
 }
@@ -597,6 +666,64 @@ serviceForm.addEventListener("submit", async function (event) {
   }
 });
 
+banquetForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  setBanquetFormError("");
+  if (!validateBanquetForm()) return;
+
+  if (window.location.protocol === "file:") {
+    setBanquetFormError("Отправка заявки недоступна при открытии сайта как файла. Загрузите сайт на Beget или откройте его через PHP-сервер.");
+    return;
+  }
+
+  const formData = new FormData(banquetForm);
+  const payload = {
+    event_type: String(formData.get("event_type") || ""),
+    event_date: String(formData.get("event_date") || ""),
+    event_time: String(formData.get("event_time") || ""),
+    guests: Number(formData.get("guests") || 0),
+    name: String(formData.get("name") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    budget: String(formData.get("budget") || "").trim(),
+    comment: String(formData.get("comment") || "").trim()
+  };
+  const originalButton = banquetSubmit.innerHTML;
+  banquetSubmit.disabled = true;
+  banquetSubmit.textContent = "Отправляем…";
+
+  try {
+    const response = await fetch("./banquet.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(function () { return {}; });
+    if (!response.ok || !result.ok) {
+      setBanquetFormError(result.message || "Не удалось отправить заявку. Попробуйте ещё раз.");
+      return;
+    }
+    successTitle.textContent = "Заявка принята!";
+    successText.textContent = result.message;
+    banquetForm.hidden = true;
+    formSuccess.hidden = false;
+  } catch (error) {
+    setBanquetFormError("Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.");
+  } finally {
+    banquetSubmit.disabled = false;
+    banquetSubmit.innerHTML = originalButton;
+  }
+});
+
+banquetForm.addEventListener("input", function (event) {
+  event.target.removeAttribute("aria-invalid");
+  setBanquetFormError("");
+});
+
+banquetForm.addEventListener("change", function (event) {
+  event.target.removeAttribute("aria-invalid");
+  setBanquetFormError("");
+});
+
 document.addEventListener("keydown", function (event) {
   if (event.key === "Escape") {
     closeCart();
@@ -631,5 +758,6 @@ if (chefSteam) {
 
 document.getElementById("currentYear").textContent = new Date().getFullYear();
 document.getElementById("formDate").min = new Date().toISOString().split("T")[0];
+banquetForm.noValidate = true;
 renderMenu();
 renderCart();

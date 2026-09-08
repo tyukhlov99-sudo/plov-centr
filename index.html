@@ -23,7 +23,6 @@
         <a href="#menu">Меню</a>
         <a href="#about">О ресторане</a>
         <a href="#banquets">Банкеты</a>
-        <a href="#gift">Сертификаты</a>
         <a href="#contacts">Контакты</a>
       </nav>
 
@@ -171,30 +170,12 @@
         <img class="banquet-image" src="./assets/feast.jpg" alt="Большой узбекский стол с блюдами" loading="lazy" />
         <div class="banquet-shade"></div>
         <div class="banquet-content page-width reveal">
-          <p class="eyebrow"><span></span> БАНКЕТЫ И СОБЫТИЯ</p>
-          <h2>Большой повод<br />для <em>большого стола.</em></h2>
-          <p>Соберём щедрое застолье для семьи, друзей и коллег — от праздничного обеда до важного торжества.</p>
-          <button class="button button-gold" type="button" data-open-modal="banquet">Обсудить событие <span>↗</span></button>
+          <p class="eyebrow"><span></span> ПРАЗДНИКИ И СОБЫТИЯ</p>
+          <h2>Банкеты и<br /><em>корпоративы.</em></h2>
+          <p>Проведём корпоратив, юбилей, семейный праздник или большое застолье. Расскажите немного о событии, а мы свяжемся с вами, уточним детали и предложим подходящий вариант.</p>
+          <button class="button button-gold" type="button" data-open-modal="banquet">Рассчитать мероприятие <span>↗</span></button>
         </div>
         <span class="banquet-side-text">СОБЫТИЯ · ГОСТЕПРИИМСТВО · ВОСТОК</span>
-      </section>
-
-      <section class="gift-section section" id="gift">
-        <div class="page-width gift-layout">
-          <div class="gift-copy reveal">
-            <p class="eyebrow eyebrow-dark"><span></span> ПОДАРОЧНЫЕ СЕРТИФИКАТЫ</p>
-            <h2>Подарите<br /><em>вкусную встречу.</em></h2>
-            <p>Подарочный сертификат «Плов Центр» — приглашение разделить хороший вечер, щедрый стол и тепло Востока.</p>
-            <button class="inline-link button-reset" type="button" data-open-modal="certificate">Выбрать номинал <span>→</span></button>
-          </div>
-          <button class="gift-card reveal" type="button" data-open-modal="certificate" aria-label="Оформить подарочный сертификат">
-            <span class="gift-card-sheen" aria-hidden="true"></span>
-            <span class="gift-logo">ПЛОВ<br /><b>ЦЕНТР</b></span>
-            <span class="gift-card-label">Подарочный<br />сертификат</span>
-            <span class="gift-card-ornament" aria-hidden="true">✦</span>
-            <span class="gift-card-bottom">МОЖАЙСК · УЗБЕКСКАЯ КУХНЯ</span>
-          </button>
-        </div>
       </section>
 
       <section class="gallery-section">
@@ -238,7 +219,6 @@
           <a href="#menu">Меню</a>
           <a href="#about">О ресторане</a>
           <a href="#banquets">Банкеты</a>
-          <a href="#gift">Сертификаты</a>
         </nav>
         <button class="to-top" type="button" data-scroll-top>Наверх <span>↑</span></button>
       </div>
@@ -299,9 +279,37 @@
           <button class="button button-dark" type="submit" id="formSubmit">Отправить заявку <span>↗</span></button>
           <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
         </form>
+        <form id="banquetForm" class="service-form banquet-form" hidden>
+          <label class="field-full">Тип мероприятия
+            <select name="event_type" required>
+              <option value="" selected disabled>Выберите тип мероприятия</option>
+              <option value="corporate">Корпоратив</option>
+              <option value="birthday">День рождения / юбилей</option>
+              <option value="family">Семейный банкет</option>
+              <option value="wedding">Свадьба</option>
+              <option value="other">Другое</option>
+            </select>
+          </label>
+          <div class="field-row">
+            <label>Дата мероприятия<input id="banquetDate" type="date" name="event_date" required /></label>
+            <label>Время начала<input type="time" name="event_time" required /></label>
+          </div>
+          <div class="field-row">
+            <label>Количество гостей<input type="number" name="guests" min="2" max="300" step="1" placeholder="Например, 25" required /></label>
+            <label><span class="field-label">Бюджет на человека <small class="optional-label">необязательно</small></span><input type="number" name="budget" min="500" max="50000" step="100" inputmode="numeric" placeholder="Например, 2500 ₽" /></label>
+          </div>
+          <div class="field-row">
+            <label>Ваше имя<input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться" required /></label>
+            <label>Телефон<input type="tel" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required /></label>
+          </div>
+          <label class="field-full"><span class="field-label">Комментарий / пожелания <small class="optional-label">необязательно</small></span><textarea name="comment" rows="4" placeholder="Например, нужен отдельный зал, музыка или особая рассадка"></textarea></label>
+          <p class="form-error" id="banquetFormError" role="alert" hidden></p>
+          <button class="button button-dark" type="submit" id="banquetSubmit">Отправить заявку <span>↗</span></button>
+          <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
+        </form>
         <div class="form-success" id="formSuccess" hidden>
           <span class="success-mark">✓</span>
-          <h3>Спасибо!</h3>
+          <h3 id="successTitle">Спасибо!</h3>
           <p id="successText">Ваша заявка принята. Мы скоро свяжемся с вами для подтверждения.</p>
           <button class="button button-outline" type="button" data-close-modal>Вернуться на сайт</button>
         </div>
