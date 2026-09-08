@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Плов Центр — узбекская кухня и доставка в Можайске." />
+    <meta name="theme-color" content="#0d0c0a" />
+    <title>Плов Центр — узбекская кухня в Можайске</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="site-noise" aria-hidden="true"></div>
+    <header class="site-header" id="top">
+      <a class="brand" href="#top" aria-label="Плов Центр — на главную">
+        <img class="brand-logo" src="./assets/logo-black-gold.png" width="100" height="100" alt="Плов Центр — халяль, традиции со вкусом" />
+      </a>
+
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a href="#menu">Меню</a>
+        <a href="#about">О ресторане</a>
+        <a href="#banquets">Банкеты</a>
+        <a href="#gift">Сертификаты</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="text-button reserve-trigger" type="button" data-open-modal="booking">Забронировать</button>
+        <button class="cart-button" type="button" data-open-cart aria-label="Открыть корзину">
+          <span class="cart-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 9.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H7.2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20.2a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6Zm7 0a.8.8 0 1 0 0-1.6.8.8 0 0 0 0 1.6Z" stroke="currentColor"/></svg>
+          </span>
+          <span>Корзина</span>
+          <b class="cart-count" id="cartCount">0</b>
+        </button>
+      </div>
+
+      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <img class="hero-image" src="./assets/hero.jpg" alt="Традиционный узбекский стол с горячими блюдами и лепёшками" />
+        <div class="hero-vignette" aria-hidden="true"></div>
+        <div class="hero-ornament ornament-right" aria-hidden="true"></div>
+        <div class="hero-content page-width">
+          <p class="eyebrow"><span></span> УЗБЕКСКАЯ КУХНЯ · МОЖАЙСК</p>
+          <h1 id="hero-title">Вкус Востока,<br /><em>созданный щедро.</em></h1>
+          <p class="hero-copy">Домашняя узбекская кухня в её красивом, настоящем воплощении. Для большого стола, близких разговоров и тёплых встреч.</p>
+          <div class="hero-actions">
+            <a class="button button-gold" href="#menu">Выбрать блюда <span>↘</span></a>
+            <button class="button button-ghost reserve-trigger" type="button" data-open-modal="booking">Забронировать стол</button>
+          </div>
+        </div>
+        <div class="hero-bottom page-width">
+          <div class="hero-vertical">Открываем вкус традиций</div>
+          <a class="scroll-cue" href="#about"><span class="scroll-dot"></span> Листайте вниз</a>
+          <div class="hero-note">Свежий хлеб<br />из тандыра</div>
+        </div>
+      </section>
+
+      <section class="intro section page-width" id="about">
+        <div class="intro-copy reveal">
+          <p class="eyebrow eyebrow-dark"><span></span> О РЕСТОРАНЕ</p>
+          <h2>Восток — это<br /><em>искусство гостеприимства.</em></h2>
+          <p>«Плов Центр» — место, где традиционные рецепты звучат современно, а каждый гость чувствует себя дома. Мы готовим с уважением к кухне Узбекистана и бережно отбираем продукты для каждого блюда.</p>
+          <a class="inline-link" href="#menu">Открыть меню <span>→</span></a>
+        </div>
+        <div class="intro-media reveal">
+          <div class="photo-frame photo-frame-tall">
+            <img src="./assets/bakery.jpg" alt="Свежие лепёшки в пекарне" loading="lazy" />
+          </div>
+          <div class="intro-stamp">
+            <span>· ПЛОВ ЦЕНТР ·</span>
+            <b>С любовью<br />к традициям</b>
+          </div>
+          <p class="photo-caption">Хлеб, который пекут<br />каждый день</p>
+        </div>
+      </section>
+
+      <section class="menu-section section" id="menu">
+        <div class="page-width">
+          <div class="menu-heading reveal">
+            <div>
+              <p class="eyebrow eyebrow-light"><span></span> ДОСТАВКА И САМОВЫВОЗ</p>
+              <h2>Меню <em>для вашего стола</em></h2>
+            </div>
+            <p>Выберите любимые блюда, добавьте в корзину — и мы приготовим их с той же заботой, как для гостей ресторана.</p>
+          </div>
+
+          <div class="menu-categories" role="tablist" aria-label="Категории меню">
+            <button class="menu-category is-active" type="button" data-category="hot" role="tab" aria-selected="true">
+              <span class="category-icon icon-cloche" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M10 32h28M13 32c1-10 5-16 11-16s10 6 11 16M24 16v-3M17 37h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+              <span>Первое блюдо</span>
+            </button>
+            <button class="menu-category" type="button" data-category="cold" role="tab" aria-selected="false">
+              <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 11c8 2 12 8 12 17v9M14 11c8 3 12 7 12 17v9M14 11c7 0 11-2 15-6M22 37h16M34 14c-4 2-6 6-6 12M35 17c-2 5-2 11 3 16" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span>Второе меню</span>
+            </button>
+            <button class="menu-category" type="button" data-category="salads" role="tab" aria-selected="false">
+              <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M11 23c2 11 8 15 13 15s11-4 13-15H11ZM16 18c1-4 3-6 5-8M24 18c0-5 2-8 4-10M28 20c3-2 5-4 8-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span>Салаты</span>
+            </button>
+            <button class="menu-category" type="button" data-category="bakery" role="tab" aria-selected="false">
+              <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="13" stroke="currentColor" stroke-width="1.3"/><circle cx="24" cy="24" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M24 11v5M37 24h-5M24 37v-5M11 24h5M33 15l-4 4M15 15l4 4M15 33l4-4M33 33l-4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+              <span>Выпечка</span>
+            </button>
+            <button class="menu-category" type="button" data-category="drinks" role="tab" aria-selected="false">
+              <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M16 10h16l-2 27H18l-2-27ZM16 17h16M21 10V7h6v3M21 24h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span>Напитки</span>
+            </button>
+          </div>
+
+          <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
+          <div class="menu-footer">
+            <p>Цены указаны в рублях. Стоимость выпечки уточняйте в ресторане. Фотографии иллюстрируют подачу блюд.</p>
+            <button class="button button-outline" type="button" data-open-cart>Открыть корзину <span>↗</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="chef-section">
+        <div class="chef-image-panel reveal">
+          <img src="./assets/chef.jpg" alt="Шеф-повар готовит плов в большом казане" loading="lazy" />
+          <div class="chef-image-shade"></div>
+          <div class="chef-steam" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+        <div class="chef-content reveal">
+          <p class="eyebrow eyebrow-dark"><span></span> НАША КУХНЯ</p>
+          <blockquote>«Главное блюдо — то,<br />в котором <em>чувствуется душа.</em>»</blockquote>
+          <p>От хрустящей лепёшки до большого казана плова — мы готовим открыто, щедро и с вниманием к каждой детали.</p>
+          <div class="chef-signature">
+            <span>Плов Центр</span>
+            <small>УЗБЕКСКАЯ КУХНЯ В МОЖАЙСКЕ</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="craft-section section page-width">
+        <div class="section-number">02</div>
+        <div class="craft-top reveal">
+          <p class="eyebrow eyebrow-dark"><span></span> В ОСНОВЕ ВКУСА</p>
+          <h2>Всё начинается<br />с <em>правильных деталей.</em></h2>
+        </div>
+        <div class="craft-grid">
+          <article class="craft-card reveal">
+            <span class="craft-index">01</span>
+            <h3>Свежие<br />продукты</h3>
+            <p>Основа честного вкуса: хорошее мясо, свежие овощи, зелень и отборные специи.</p>
+          </article>
+          <article class="craft-card reveal">
+            <span class="craft-index">02</span>
+            <h3>Огонь<br />и терпение</h3>
+            <p>Настоящий плов и хлеб не терпят спешки — им нужны время, жар и мастерство.</p>
+          </article>
+          <article class="craft-card craft-card-image reveal">
+            <img src="./assets/bread.jpg" alt="Узбекские лепёшки с золотистой корочкой" loading="lazy" />
+            <span class="craft-image-label">Из тандыра<br />к вашему столу</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="banquet-section" id="banquets">
+        <img class="banquet-image" src="./assets/feast.jpg" alt="Большой узбекский стол с блюдами" loading="lazy" />
+        <div class="banquet-shade"></div>
+        <div class="banquet-content page-width reveal">
+          <p class="eyebrow"><span></span> БАНКЕТЫ И СОБЫТИЯ</p>
+          <h2>Большой повод<br />для <em>большого стола.</em></h2>
+          <p>Соберём щедрое застолье для семьи, друзей и коллег — от праздничного обеда до важного торжества.</p>
+          <button class="button button-gold" type="button" data-open-modal="banquet">Обсудить событие <span>↗</span></button>
+        </div>
+        <span class="banquet-side-text">СОБЫТИЯ · ГОСТЕПРИИМСТВО · ВОСТОК</span>
+      </section>
+
+      <section class="gift-section section" id="gift">
+        <div class="page-width gift-layout">
+          <div class="gift-copy reveal">
+            <p class="eyebrow eyebrow-dark"><span></span> ПОДАРОЧНЫЕ СЕРТИФИКАТЫ</p>
+            <h2>Подарите<br /><em>вкусную встречу.</em></h2>
+            <p>Подарочный сертификат «Плов Центр» — приглашение разделить хороший вечер, щедрый стол и тепло Востока.</p>
+            <button class="inline-link button-reset" type="button" data-open-modal="certificate">Выбрать номинал <span>→</span></button>
+          </div>
+          <button class="gift-card reveal" type="button" data-open-modal="certificate" aria-label="Оформить подарочный сертификат">
+            <span class="gift-card-sheen" aria-hidden="true"></span>
+            <span class="gift-logo">ПЛОВ<br /><b>ЦЕНТР</b></span>
+            <span class="gift-card-label">Подарочный<br />сертификат</span>
+            <span class="gift-card-ornament" aria-hidden="true">✦</span>
+            <span class="gift-card-bottom">МОЖАЙСК · УЗБЕКСКАЯ КУХНЯ</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="gallery-section">
+        <div class="gallery-row gallery-row-top">
+          <figure><img src="./assets/restaurant-hall.jpg" alt="Зал ресторана Плов Центр" loading="lazy" /></figure>
+          <figure><img src="./assets/manty.jpg" alt="Манты на расписном блюде" loading="lazy" /></figure>
+          <figure><img src="./assets/lagman.jpg" alt="Лагман с овощами" loading="lazy" /></figure>
+        </div>
+        <div class="gallery-title"><span>От кухни</span><em>с любовью</em><span>к вашему столу</span></div>
+        <div class="gallery-row gallery-row-bottom">
+          <figure><img src="./assets/salad.jpg" alt="Свежий салат из овощей" loading="lazy" /></figure>
+          <figure><img src="./assets/pastry.jpg" alt="Восточная выпечка" loading="lazy" /></figure>
+          <figure><img src="./assets/shurpa.jpg" alt="Горячее блюдо с мясом и овощами" loading="lazy" /></figure>
+        </div>
+      </section>
+
+      <section class="contact-section section" id="contacts">
+        <div class="page-width contact-layout">
+          <div class="contact-copy reveal">
+            <p class="eyebrow eyebrow-light"><span></span> КОНТАКТЫ</p>
+            <h2>До скорой<br /><em>встречи.</em></h2>
+            <p>Ждём вас в «Плов Центре»!</p>
+            <address class="restaurant-address">Можайск, ул. 20 Января, 1А</address>
+            <a class="map-link" href="https://yandex.ru/maps/10739/mozhaysk/house/ulitsa_20_yanvarya_1a/Z08YdgRiSkMHQFtvfXh4eXxkYw==/" target="_blank" rel="noopener noreferrer">Открыть адрес в Яндекс Картах ↗</a>
+            <button class="button button-gold" type="button" data-open-modal="booking">Забронировать стол <span>↗</span></button>
+          </div>
+          <div class="restaurant-map reveal">
+            <iframe title="Карта: Можайск, улица 20 Января, 1А" src="https://yandex.ru/map-widget/v1/?text=Можайск%2C%20улица%2020%20Января%2C%201А&amp;z=17" width="640" height="450" loading="lazy" allowfullscreen></iframe>
+            <a href="https://yandex.ru/maps/10739/mozhaysk/house/ulitsa_20_yanvarya_1a/Z08YdgRiSkMHQFtvfXh4eXxkYw==/" target="_blank" rel="noopener noreferrer">Можайск, ул. 20 Января, 1А · Яндекс Карты ↗</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-width footer-top">
+        <a class="brand footer-brand" href="#top" aria-label="Плов Центр — на главную">
+          <img class="brand-logo" src="./assets/logo-black-gold.png" width="100" height="100" alt="Плов Центр — халяль, традиции со вкусом" />
+        </a>
+        <nav aria-label="Навигация в подвале">
+          <a href="#menu">Меню</a>
+          <a href="#about">О ресторане</a>
+          <a href="#banquets">Банкеты</a>
+          <a href="#gift">Сертификаты</a>
+        </nav>
+        <button class="to-top" type="button" data-scroll-top>Наверх <span>↑</span></button>
+      </div>
+      <div class="page-width footer-bottom">
+        <span>© <span id="currentYear"></span> Плов Центр</span>
+        <span>Узбекская кухня · Можайск</span>
+        <span>Сделано с уважением к традициям</span>
+      </div>
+    </footer>
+
+    <div class="overlay" id="overlay" hidden></div>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Корзина" aria-hidden="true">
+      <div class="drawer-head">
+        <div>
+          <p class="eyebrow eyebrow-dark"><span></span> ВАШ ЗАКАЗ</p>
+          <h2>Корзина</h2>
+        </div>
+        <button class="icon-close" type="button" data-close-cart aria-label="Закрыть корзину"><span></span><span></span></button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="drawer-foot">
+        <div class="cart-total-row"><span>Итого</span><b id="cartTotal">0 ₽</b></div>
+        <button class="button button-dark checkout-button" type="button" data-order>Оформить заказ <span>↗</span></button>
+        <p>Состав заказа можно изменить перед подтверждением.</p>
+      </div>
+    </aside>
+
+    <section class="modal" id="formModal" aria-hidden="true" aria-labelledby="modalTitle" role="dialog" aria-modal="true">
+      <div class="modal-panel">
+        <button class="icon-close modal-close" type="button" data-close-modal aria-label="Закрыть окно"><span></span><span></span></button>
+        <div class="modal-intro">
+          <p class="eyebrow eyebrow-dark"><span></span> ПЛОВ ЦЕНТР</p>
+          <h2 id="modalTitle">Бронирование</h2>
+          <p id="modalDescription">Оставьте контакты, и мы подтвердим ваш столик.</p>
+        </div>
+        <div class="modal-order-preview" id="modalOrderPreview" hidden></div>
+        <form id="serviceForm" class="service-form">
+          <input id="formContext" type="hidden" name="context" value="booking" />
+          <div class="field-row">
+            <label>Ваше имя<input type="text" name="name" placeholder="Как к вам обращаться" required /></label>
+            <label>Телефон<input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required /></label>
+          </div>
+          <div class="field-row" id="dateFields">
+            <label>Дата<input id="formDate" type="date" name="date" /></label>
+            <label>Количество гостей<input type="number" name="guests" min="1" max="50" value="2" /></label>
+          </div>
+          <label class="field-full">Комментарий<textarea name="comment" rows="3" placeholder="Пожелания к бронированию или заказу"></textarea></label>
+          <button class="button button-dark" type="submit" id="formSubmit">Отправить заявку <span>↗</span></button>
+          <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
+        </form>
+        <div class="form-success" id="formSuccess" hidden>
+          <span class="success-mark">✓</span>
+          <h3>Спасибо!</h3>
+          <p id="successText">Ваша заявка принята. Мы скоро свяжемся с вами для подтверждения.</p>
+          <button class="button button-outline" type="button" data-close-modal>Вернуться на сайт</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
