@@ -87,7 +87,7 @@ if ($total <= 0 || $total > 100000) {
     respond(422, ['ok' => false, 'message' => 'Не удалось подтвердить сумму заказа.']);
 }
 
-$configPath = '/home/t/tiukhl2z/private/telegram_config.php';
+$configPath = '/home/t/tiukhl2z/tiukhl2z.beget.tech/private/telegram_config.php';
 if (!is_file($configPath)) {
     error_log('Telegram config file is unavailable.');
     respond(500, ['ok' => false, 'message' => 'Не удалось отправить заказ. Попробуйте ещё раз или позвоните в ресторан.']);
