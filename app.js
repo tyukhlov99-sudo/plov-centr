@@ -275,7 +275,7 @@ const catalog = [
 
 const categoryNames = {
   hot: "Первое блюдо",
-  cold: "Второе меню",
+  cold: "Горячие блюда",
   salads: "Салаты",
   bakery: "Выпечка",
   drinks: "Напитки"
